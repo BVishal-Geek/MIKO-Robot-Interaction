@@ -1,7 +1,7 @@
 import pyttsx3,os,openai
 import json
 import openai
-import speech_recognition as s
+import speech_recognition as sr
 class Engine:
     engine = pyttsx3.init('sapi5')
     
@@ -13,11 +13,25 @@ class Engine:
         self.engine.runAndWait()
   
     def takeCommand(self):
-          pass
+        r = sr.Recognizer()
+        with sr.Microphone as source:
+            print("Listening...")
+            r.pause_threshold = 2
+            audio = r.listen(source)
+        try:
+            print("Recognizing")
+            self.query = r.recognize_google(audio,language='en-in')
+            print(f"user said: {self.query}\n")
+            
+        except Exception as e:
+            print("say that again please")
+            return "None"
+                
+                  
+      
     def openai(self):
-        
         openai.api_key = os.getenv("OPENAI_API_KEY")
-
+        
         response = openai.Completion.create(
         model="text-davinci-003",
         prompt= "what is gender?",
@@ -36,7 +50,7 @@ class Engine:
 
 if __name__ == '__main__':
     run = Engine()
-    run.openai()
+    run.takeCommand()
     
 
 
