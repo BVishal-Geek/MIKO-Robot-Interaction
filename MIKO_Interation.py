@@ -1,6 +1,7 @@
 import pyttsx3,os,openai
 import json
 import openai
+import speech_recognition as s
 class Engine:
     engine = pyttsx3.init('sapi5')
     
@@ -11,7 +12,8 @@ class Engine:
         self.engine.say(audio)
         self.engine.runAndWait()
   
-
+    def takeCommand(self):
+          pass
     def openai(self):
         
         openai.api_key = os.getenv("OPENAI_API_KEY")
