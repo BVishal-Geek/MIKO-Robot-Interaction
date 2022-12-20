@@ -4,28 +4,27 @@ import openai
 import speech_recognition as sr
 import datetime
 import sys
+from text_to_speech import speak
 class Engine:
-    engine = pyttsx3.init('sapi5')
     
     def __init__(self):
         pass
     
-    def speak(self,audio):
-        self.engine.say(audio)
-        self.engine.runAndWait()
+    def say(self,audio):
+        speak(audio)
         
     def wishMe(self):
         hour = int(datetime.datetime.now().hour)
         if hour>=0 and hour<12:
-            self.speak("Good Morning!")
+            self.say("Good Morning!")
 
         elif hour>=12 and hour<18:
-            self.speak("Good Afternoon!")   
+            self.say("Good Afternoon!")   
 
         else:
-            self.speak("Good Evening!")  
+            self.say("Good Evening!")  
 
-        self.speak("I am Jarvis Sir. Please tell me how may I help you")
+        self.say("I am Jarvis Sir. Please tell me how may I help you")
         
     def takeCommand(self):
         #It takes microphone input from the user and returns string output
@@ -38,9 +37,11 @@ class Engine:
         try:
             print("Recognizing...")    
             query = r.recognize_google(audio, language='en-in')
-            # print(f"User said: {query}\n")
             
-            # openai(self.query)
+            # if (query == "Hi" or "Hey MIKO" or "MIKO"):
+            #     continue
+            # else:
+            #     break
         except Exception as e:  
             print("Say that again please...")
             return None
@@ -63,11 +64,12 @@ class Engine:
         frequency_penalty=0,
         presence_penalty=0
             )
+        print(response)
         data_raw = response.get('choices')
         for i in data_raw:
             data = i.get('text')
-            self.speak(data)
-              
+            self.say(data)
+            
           
 
 if __name__ == '__main__':

@@ -1,1 +1,1 @@
-openai
+OPENAI_API_KEY
