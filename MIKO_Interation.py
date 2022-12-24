@@ -1,10 +1,10 @@
 import pyttsx3,os,openai
 import json
-import openai
 import speech_recognition as sr
 import datetime
 import sys
 from text_to_speech import speak
+
 class Engine:
     
     def __init__(self):
@@ -24,7 +24,7 @@ class Engine:
         else:
             self.say("Good Evening!")  
 
-        self.say("I am Jarvis Sir. Please tell me how may I help you")
+        self.say("I am Vinny. Please tell me how may I help you")
         
     def takeCommand(self):
         #It takes microphone input from the user and returns string output
@@ -32,25 +32,22 @@ class Engine:
         with sr.Microphone() as source:
             print("Listening...")
             r.pause_threshold = 1
+            r.energy_threshold = 300
             audio = r.listen(source)
 
         try:
             print("Recognizing...")    
             query = r.recognize_google(audio, language='en-in')
-            
-            # if (query == "Hi" or "Hey MIKO" or "MIKO"):
-            #     continue
-            # else:
-            #     break
+        
         except Exception as e:  
             print("Say that again please...")
             return None
-        self.openai(query)
         
-        # return query
-                
-   
-      
+        # self.list = [i for i in query.split(" ")]
+        # print(self.list)
+        
+        self.openai(query)
+                          
     def openai(self,Text):
         print(f"User said: {Text}\n")
         openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -71,7 +68,6 @@ class Engine:
             self.say(data)
             
           
-
 if __name__ == '__main__':
     run = Engine()
     run.wishMe()
