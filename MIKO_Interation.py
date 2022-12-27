@@ -4,6 +4,8 @@ import speech_recognition as sr
 import datetime
 import sys
 from text_to_speech import speak
+import threading
+
 
 class Engine:
     
@@ -31,23 +33,20 @@ class Engine:
         r = sr.Recognizer()
         with sr.Microphone() as source:
             print("Listening...")
+            audio = r.listen(source)
             r.pause_threshold = 1
             r.energy_threshold = 300
-            audio = r.listen(source)
-
-        try:
-            print("Recognizing...")    
-            query = r.recognize_google(audio, language='en-in')
-        
-        except Exception as e:  
-            print("Say that again please...")
-            return None
-        
-        # self.list = [i for i in query.split(" ")]
-        # print(self.list)
-        
-        self.openai(query)
-                          
+            
+            try:    
+                print("Recognizing...")    
+                query = r.recognize_google(audio, language='en-in')
+            
+            except Exception as e:  
+                print("Say that again p lease...")
+                return None
+            
+        return query
+                     
     def openai(self,Text):
         print(f"User said: {Text}\n")
         openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -63,18 +62,43 @@ class Engine:
             )
         print(response)
         data_raw = response.get('choices')
+        
+        
+        
         for i in data_raw:
             data = i.get('text')
             self.say(data)
+
+
+class listen:
+    recognize = Engine()
+    def __init__(self) -> None:
+        pass
+    
+    def listen(self):
+        WAKE = "mobile"
+        
+        while True:
+            print("Listening..........")
+            text = self.recognize.takeCommand()
             
+            if(text.count(WAKE)>0):
+                speak("I am Ready")
+                text = self.recognize.takeCommand()
+        
+                self.recognize.openai(text)
+    
+    
+                
           
 if __name__ == '__main__':
+    Hear = listen()
     run = Engine()
     run.wishMe()
     
     while True:
         try:
-            run.takeCommand()
+            Hear.listen()
         except KeyboardInterrupt:
             sys.exit()
             

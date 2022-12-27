@@ -1,3 +1,11 @@
-from text_to_speech import speak
+import threading
 
-speak("Hello World", "en", speak=True)
+class vishal:
+    def __init__(self) -> None:
+        pass
+    
+    def get_value(self,value):
+        if value == True:
+            print("Hey there!!!!")
+
+
