@@ -4,7 +4,6 @@ import speech_recognition as sr
 import datetime
 import sys
 from text_to_speech import speak
-import threading
 
 
 class Engine:
@@ -33,16 +32,17 @@ class Engine:
         r = sr.Recognizer()
         with sr.Microphone() as source:
             print("Listening...")
+            r.adjust_for_ambient_noise(source, duration =2)
             audio = r.listen(source)
             r.pause_threshold = 1
-            r.energy_threshold = 300
+            # r.energy_threshold = 300
             
             try:    
                 print("Recognizing...")    
                 query = r.recognize_google(audio, language='en-in')
             
             except Exception as e:  
-                print("Say that again p lease...")
+                print("Say that again please...")
                 return None
             
         return query
@@ -63,8 +63,6 @@ class Engine:
         print(response)
         data_raw = response.get('choices')
         
-        
-        
         for i in data_raw:
             data = i.get('text')
             self.say(data)
@@ -79,18 +77,16 @@ class listen:
         WAKE = "mobile"
         
         while True:
-            print("Listening..........")
+            
             text = self.recognize.takeCommand()
             
             if(text.count(WAKE)>0):
                 speak("I am Ready")
                 text = self.recognize.takeCommand()
         
-                self.recognize.openai(text)
+            self.recognize.openai(text)
     
     
-                
-          
 if __name__ == '__main__':
     Hear = listen()
     run = Engine()
@@ -101,8 +97,3 @@ if __name__ == '__main__':
             Hear.listen()
         except KeyboardInterrupt:
             sys.exit()
-            
-    
-
-
-

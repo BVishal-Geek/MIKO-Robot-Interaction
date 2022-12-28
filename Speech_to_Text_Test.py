@@ -4,7 +4,7 @@ r=sr.Recognizer()
 # print(sr.Microphone.list_microphone_names())
 with sr.Microphone() as source:
     r.adjust_for_ambient_noise(source,duration=1)
-    r.energy_threshold = 300
+    # r.energy_threshold = 300
     print("say anything : ")
     audio= r.listen(source)
     try:
