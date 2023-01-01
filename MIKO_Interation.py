@@ -32,20 +32,21 @@ class Engine:
         r = sr.Recognizer()
         with sr.Microphone() as source:
             print("Listening...")
-            r.adjust_for_ambient_noise(source, duration =2)
+            r.adjust_for_ambient_noise(source, duration =1)
             audio = r.listen(source)
             r.pause_threshold = 1
-            # r.energy_threshold = 300
+            r.energy_threshold = 300
             
             try:    
                 print("Recognizing...")    
                 query = r.recognize_google(audio, language='en-in')
+                print(f"User said: {query}\n")
             
             except Exception as e:  
-                print("Say that again please...")
+                self.say("Say that again please...")
                 return None
             
-        return query
+            return query
                      
     def openai(self,Text):
         print(f"User said: {Text}\n")
@@ -60,11 +61,12 @@ class Engine:
         frequency_penalty=0,
         presence_penalty=0
             )
-        print(response)
+       
         data_raw = response.get('choices')
         
         for i in data_raw:
             data = i.get('text')
+            
             self.say(data)
 
 
@@ -79,12 +81,11 @@ class listen:
         while True:
             
             text = self.recognize.takeCommand()
-            
-            if(text.count(WAKE)>0):
+            if(text.count(WAKE)):
                 speak("I am Ready")
                 text = self.recognize.takeCommand()
         
-            self.recognize.openai(text)
+                self.recognize.openai(text)
     
     
 if __name__ == '__main__':
