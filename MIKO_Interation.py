@@ -44,8 +44,7 @@ class Engine:
             
             except Exception as e:  
                 self.say("Say that again please...")
-                return None
-            
+                return ""
             return query
                      
     def openai(self,Text):
@@ -76,22 +75,22 @@ class listen:
         pass
     
     def listen(self):
-        WAKE = "mobile"
+        WAKE = "wake up"
         
         while True:
             
             text = self.recognize.takeCommand()
+            
             if(text.count(WAKE)):
                 speak("I am Ready")
                 text = self.recognize.takeCommand()
-        
                 self.recognize.openai(text)
     
     
 if __name__ == '__main__':
-    Hear = listen()
     run = Engine()
     run.wishMe()
+    Hear = listen()
     
     while True:
         try:
