@@ -44,7 +44,7 @@ class Engine:
             
             except Exception as e:  
                 self.say("Say that again please...")
-                return None
+                return ""
             return query
                      
     def openai(self,Text):
