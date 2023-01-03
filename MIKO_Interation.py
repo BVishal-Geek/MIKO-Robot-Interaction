@@ -44,7 +44,7 @@ class Engine:
             
             except Exception as e:  
                 self.say("Say that again please...")
-                return ""
+                return None
             return query
                      
     def openai(self,Text):
@@ -60,7 +60,7 @@ class Engine:
         frequency_penalty=0,
         presence_penalty=0
             )
-       
+        print(response)
         data_raw = response.get('choices')
         
         for i in data_raw:
