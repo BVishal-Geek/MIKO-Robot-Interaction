@@ -65,7 +65,6 @@ class Engine:
         
         for i in data_raw:
             data = i.get('text')
-            
             self.say(data)
 
 
